@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Nostra Classe - Progetti Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #2C3E50;
+            --light: #F8F9FA;
+            --card-bg: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 50px, rgba(255,255,255,0.03) 51px),
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 50px, rgba(255,255,255,0.03) 51px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            color: white;
+            text-shadow: 
+                4px 4px 0px rgba(0,0,0,0.1),
+                6px 6px 20px rgba(0,0,0,0.2);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: rgba(255,255,255,0.95);
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .intro-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem 2.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: left;
+            line-height: 1.7;
+        }
+
+        .intro-box p {
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-size: 1rem;
+        }
+
+        .intro-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .intro-box strong {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .student-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.2),
+                0 1px 8px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .student-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .student-card:hover::after {
+            left: 100%;
+            opacity: 1;
+        }
+
+        .student-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .student-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.25),
+                0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        /* Colori variabili per ogni carta */
+        .student-card:nth-child(3n+1) { --card-accent: #FF6B6B; }
+        .student-card:nth-child(3n+2) { --card-accent: #4ECDC4; }
+        .student-card:nth-child(3n+3) { --card-accent: #FFE66D; }
+
+        /* Pattern decorativi diversi per gli avatar */
+        .student-card:nth-child(5n+1) .student-icon::before {
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(255,255,255,0.2) 0%, transparent 50%);
+        }
+
+        .student-card:nth-child(5n+2) .student-icon::before {
+            background: 
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
+        }
+
+        .student-card:nth-child(5n+3) .student-icon::before {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.3) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.2) 0%, transparent 40%);
+        }
+
+        .student-card:nth-child(5n+4) .student-icon::before {
+            background: 
+                repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
+        }
+
+        .student-card:nth-child(5n+5) .student-icon::before {
+            background: 
+                radial-gradient(circle at 50% 20%, rgba(255,255,255,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.2) 0%, transparent 50%);
+        }
+
+        .student-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--card-accent), color-mix(in srgb, var(--card-accent) 70%, white));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-icon::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(255,255,255,0.2) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .student-icon::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .student-card:hover .student-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+        }
+
+        .icon-svg {
+            position: relative;
+            z-index: 1;
+            width: 50px;
+            height: 50px;
+            fill: white;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10px, -10px) rotate(5deg); }
+            66% { transform: translate(-10px, 10px) rotate(-5deg); }
+        }
+
+        .student-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .student-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, var(--card-accent), color-mix(in srgb, var(--card-accent) 80%, black));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .student-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Animazioni */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Delay progressivo per le carte */
+        .student-card:nth-child(1) { animation-delay: 0.1s; }
+        .student-card:nth-child(2) { animation-delay: 0.15s; }
+        .student-card:nth-child(3) { animation-delay: 0.2s; }
+        .student-card:nth-child(4) { animation-delay: 0.25s; }
+        .student-card:nth-child(5) { animation-delay: 0.3s; }
+        .student-card:nth-child(6) { animation-delay: 0.35s; }
+        .student-card:nth-child(7) { animation-delay: 0.4s; }
+        .student-card:nth-child(8) { animation-delay: 0.45s; }
+        .student-card:nth-child(9) { animation-delay: 0.5s; }
+        .student-card:nth-child(10) { animation-delay: 0.55s; }
+        .student-card:nth-child(11) { animation-delay: 0.6s; }
+        .student-card:nth-child(12) { animation-delay: 0.65s; }
+        .student-card:nth-child(13) { animation-delay: 0.7s; }
+        .student-card:nth-child(14) { animation-delay: 0.75s; }
+        .student-card:nth-child(15) { animation-delay: 0.8s; }
+        .student-card:nth-child(16) { animation-delay: 0.85s; }
+        .student-card:nth-child(17) { animation-delay: 0.9s; }
+        .student-card:nth-child(18) { animation-delay: 0.95s; }
+        .student-card:nth-child(19) { animation-delay: 1s; }
+        .student-card:nth-child(20) { animation-delay: 1.05s; }
+        .student-card:nth-child(21) { animation-delay: 1.1s; }
+        .student-card:nth-child(22) { animation-delay: 1.15s; }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            color: white;
+            font-size: 0.95rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .students-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Progetti di Intelligenza Artificiale</h1>
+            <p class="subtitle">Implementazioni del Gioco Forza 4 con Algoritmo MinMax</p>
+            <div class="intro-box">
+                <p>Questa raccolta presenta i lavori degli studenti nell'ambito dello studio dell'Intelligenza Artificiale. Ogni progetto è un'implementazione personalizzata del classico gioco Forza 4 (Connect Four), dove l'avversario computerizzato utilizza l'<strong>algoritmo MinMax</strong> per determinare le mosse ottimali.</p>
+                <p>L'algoritmo MinMax è una tecnica fondamentale nell'AI per giochi a somma zero, che esplora ricorsivamente l'albero delle possibili mosse future per scegliere la strategia migliore. Ogni studente ha sviluppato la propria versione con interfaccia grafica e personalizzazioni uniche.</p>
+            </div>
+        </header>
+
+        <div class="students-grid">
+            <!-- Studente 1 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="6" width="12" height="12" rx="1" stroke="white" stroke-width="1.5" fill="none"/>
+                        <line x1="9" y1="6" x2="9" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="12" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="6" x2="15" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="9" y1="18" x2="9" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="18" x2="12" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="18" x2="15" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="9" x2="3" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="12" x2="3" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="15" x2="3" y2="15" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="9" x2="21" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="12" x2="21" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="15" x2="21" y2="15" stroke="white" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Rebecca Marini</h2>
+                <a href="studente1.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 2 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="4" r="2" fill="white"/>
+                        <circle cx="8" cy="12" r="2" fill="white"/>
+                        <circle cx="16" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="20" r="1.5" fill="white"/>
+                        <circle cx="10" cy="20" r="1.5" fill="white"/>
+                        <circle cx="14" cy="20" r="1.5" fill="white"/>
+                        <circle cx="18" cy="20" r="1.5" fill="white"/>
+                        <line x1="12" y1="6" x2="8" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="16" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="6" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="10" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="14" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="18" y2="18.5" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Davide Brambilla</h2>
+                <a href="studente2.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 3 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="6" r="1.5" fill="white"/>
+                        <circle cx="18" cy="6" r="1.5" fill="white"/>
+                        <circle cx="6" cy="18" r="1.5" fill="white"/>
+                        <circle cx="18" cy="18" r="1.5" fill="white"/>
+                        <line x1="12" y1="10" x2="7" y2="7" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="10" x2="17" y2="7" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="14" x2="7" y2="17" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="14" x2="17" y2="17" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Leonardo Vertua</h2>
+                <a href="studente3.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 4 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3C7.5 3 4 6 4 10c0 2 1 4 2 5 0 2-1 4 0 6 1.5 2.5 4.5 3 6 3s4.5-.5 6-3c1-2 0-4 0-6 1-1 2-3 2-5 0-4-3.5-7-8-7z" stroke="white" stroke-width="1.5" fill="none"/>
+                        <path d="M9 10c.5-1 1-1.5 1.5-1.5M15 10c-.5-1-1-1.5-1.5-1.5" stroke="white" stroke-width="1.5" fill="none"/>
+                        <circle cx="9" cy="11" r="1" fill="white"/>
+                        <circle cx="15" cy="11" r="1" fill="white"/>
+                        <path d="M8 14c1 1 2 1.5 4 1.5s3-.5 4-1.5" stroke="white" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Carola Faiella</h2>
+                <a href="studente4.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 5 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L4 8l4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M16 4l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="14" y1="4" x2="10" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M8 14L4 18l4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M16 14l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="14" y1="14" x2="10" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Leonardo Lanzoni</h2>
+                <a href="studente5.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 6 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="6" width="12" height="12" rx="1" stroke="white" stroke-width="1.5" fill="none"/>
+                        <line x1="9" y1="6" x2="9" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="12" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="6" x2="15" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="9" y1="18" x2="9" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="18" x2="12" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="18" x2="15" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="9" x2="3" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="12" x2="3" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="15" x2="3" y2="15" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="9" x2="21" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="12" x2="21" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="15" x2="21" y2="15" stroke="white" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Matteo Conte</h2>
+                <a href="studente6.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 7 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="4" r="2" fill="white"/>
+                        <circle cx="8" cy="12" r="2" fill="white"/>
+                        <circle cx="16" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="20" r="1.5" fill="white"/>
+                        <circle cx="10" cy="20" r="1.5" fill="white"/>
+                        <circle cx="14" cy="20" r="1.5" fill="white"/>
+                        <circle cx="18" cy="20" r="1.5" fill="white"/>
+                        <line x1="12" y1="6" x2="8" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="16" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="6" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="10" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="14" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="18" y2="18.5" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Sofia Gioia Guarneri</h2>
+                <a href="studente7.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 8 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="6" r="1.5" fill="white"/>
+                        <circle cx="18" cy="6" r="1.5" fill="white"/>
+                        <circle cx="6" cy="18" r="1.5" fill="white"/>
+                        <circle cx="18" cy="18" r="1.5" fill="white"/>
+                        <line x1="12" y1="10" x2="7" y2="7" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="10" x2="17" y2="7" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="14" x2="7" y2="17" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="14" x2="17" y2="17" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Argannee De Mitri</h2>
+                <a href="studente8.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 9 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3C7.5 3 4 6 4 10c0 2 1 4 2 5 0 2-1 4 0 6 1.5 2.5 4.5 3 6 3s4.5-.5 6-3c1-2 0-4 0-6 1-1 2-3 2-5 0-4-3.5-7-8-7z" stroke="white" stroke-width="1.5" fill="none"/>
+                        <path d="M9 10c.5-1 1-1.5 1.5-1.5M15 10c-.5-1-1-1.5-1.5-1.5" stroke="white" stroke-width="1.5" fill="none"/>
+                        <circle cx="9" cy="11" r="1" fill="white"/>
+                        <circle cx="15" cy="11" r="1" fill="white"/>
+                        <path d="M8 14c1 1 2 1.5 4 1.5s3-.5 4-1.5" stroke="white" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Letizia Barucco</h2>
+                <a href="studente9.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 10 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L4 8l4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M16 4l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="14" y1="4" x2="10" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M8 14L4 18l4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M16 14l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="14" y1="14" x2="10" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Noemi Zucchetti</h2>
+                <a href="studente10.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 11 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="6" width="12" height="12" rx="1" stroke="white" stroke-width="1.5" fill="none"/>
+                        <line x1="9" y1="6" x2="9" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="12" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="6" x2="15" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="9" y1="18" x2="9" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="18" x2="12" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="18" x2="15" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="9" x2="3" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="12" x2="3" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="15" x2="3" y2="15" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="9" x2="21" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="12" x2="21" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="15" x2="21" y2="15" stroke="white" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Gabriela Antohe</h2>
+                <a href="studente11.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 12 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="4" r="2" fill="white"/>
+                        <circle cx="8" cy="12" r="2" fill="white"/>
+                        <circle cx="16" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="20" r="1.5" fill="white"/>
+                        <circle cx="10" cy="20" r="1.5" fill="white"/>
+                        <circle cx="14" cy="20" r="1.5" fill="white"/>
+                        <circle cx="18" cy="20" r="1.5" fill="white"/>
+                        <line x1="12" y1="6" x2="8" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="16" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="6" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="10" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="14" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="18" y2="18.5" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Rafael Antohe</h2>
+                <a href="studente12.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 13 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="6" r="1.5" fill="white"/>
+                        <circle cx="18" cy="6" r="1.5" fill="white"/>
+                        <circle cx="6" cy="18" r="1.5" fill="white"/>
+                        <circle cx="18" cy="18" r="1.5" fill="white"/>
+                        <line x1="12" y1="10" x2="7" y2="7" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="10" x2="17" y2="7" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="14" x2="7" y2="17" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="14" x2="17" y2="17" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Francesco Culcasi</h2>
+                <a href="studente13.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 14 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3C7.5 3 4 6 4 10c0 2 1 4 2 5 0 2-1 4 0 6 1.5 2.5 4.5 3 6 3s4.5-.5 6-3c1-2 0-4 0-6 1-1 2-3 2-5 0-4-3.5-7-8-7z" stroke="white" stroke-width="1.5" fill="none"/>
+                        <path d="M9 10c.5-1 1-1.5 1.5-1.5M15 10c-.5-1-1-1.5-1.5-1.5" stroke="white" stroke-width="1.5" fill="none"/>
+                        <circle cx="9" cy="11" r="1" fill="white"/>
+                        <circle cx="15" cy="11" r="1" fill="white"/>
+                        <path d="M8 14c1 1 2 1.5 4 1.5s3-.5 4-1.5" stroke="white" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Giorgio Compagnoni</h2>
+                <a href="studente14.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 15 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L4 8l4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M16 4l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="14" y1="4" x2="10" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M8 14L4 18l4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M16 14l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="14" y1="14" x2="10" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Alex Plebani</h2>
+                <a href="studente15.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 16 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="6" width="12" height="12" rx="1" stroke="white" stroke-width="1.5" fill="none"/>
+                        <line x1="9" y1="6" x2="9" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="12" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="6" x2="15" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="9" y1="18" x2="9" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="18" x2="12" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="18" x2="15" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="9" x2="3" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="12" x2="3" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="15" x2="3" y2="15" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="9" x2="21" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="12" x2="21" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="15" x2="21" y2="15" stroke="white" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Dalila Sharon Messina</h2>
+                <a href="studente16.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 17 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="4" r="2" fill="white"/>
+                        <circle cx="8" cy="12" r="2" fill="white"/>
+                        <circle cx="16" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="20" r="1.5" fill="white"/>
+                        <circle cx="10" cy="20" r="1.5" fill="white"/>
+                        <circle cx="14" cy="20" r="1.5" fill="white"/>
+                        <circle cx="18" cy="20" r="1.5" fill="white"/>
+                        <line x1="12" y1="6" x2="8" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="16" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="6" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="10" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="14" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="18" y2="18.5" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Martina Pasolini</h2>
+                <a href="studente17.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 18 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="6" r="1.5" fill="white"/>
+                        <circle cx="18" cy="6" r="1.5" fill="white"/>
+                        <circle cx="6" cy="18" r="1.5" fill="white"/>
+                        <circle cx="18" cy="18" r="1.5" fill="white"/>
+                        <line x1="12" y1="10" x2="7" y2="7" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="10" x2="17" y2="7" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="14" x2="7" y2="17" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="14" x2="17" y2="17" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Giorgio Costa</h2>
+                <a href="studente18.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 19 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3C7.5 3 4 6 4 10c0 2 1 4 2 5 0 2-1 4 0 6 1.5 2.5 4.5 3 6 3s4.5-.5 6-3c1-2 0-4 0-6 1-1 2-3 2-5 0-4-3.5-7-8-7z" stroke="white" stroke-width="1.5" fill="none"/>
+                        <path d="M9 10c.5-1 1-1.5 1.5-1.5M15 10c-.5-1-1-1.5-1.5-1.5" stroke="white" stroke-width="1.5" fill="none"/>
+                        <circle cx="9" cy="11" r="1" fill="white"/>
+                        <circle cx="15" cy="11" r="1" fill="white"/>
+                        <path d="M8 14c1 1 2 1.5 4 1.5s3-.5 4-1.5" stroke="white" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Alessandro Capoferri</h2>
+                <a href="studente19.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 20 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L4 8l4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M16 4l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="14" y1="4" x2="10" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M8 14L4 18l4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M16 14l4 4-4 4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="14" y1="14" x2="10" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Simone Plebani</h2>
+                <a href="studente20.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 21 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="6" width="12" height="12" rx="1" stroke="white" stroke-width="1.5" fill="none"/>
+                        <line x1="9" y1="6" x2="9" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="12" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="6" x2="15" y2="3" stroke="white" stroke-width="1.5"/>
+                        <line x1="9" y1="18" x2="9" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="18" x2="12" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="15" y1="18" x2="15" y2="21" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="9" x2="3" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="12" x2="3" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="6" y1="15" x2="3" y2="15" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="9" x2="21" y2="9" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="12" x2="21" y2="12" stroke="white" stroke-width="1.5"/>
+                        <line x1="18" y1="15" x2="21" y2="15" stroke="white" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="2" fill="white"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Muhammad Subhan Naveed</h2>
+                <a href="studente21.html" class="student-link">Visita il Progetto</a>
+            </div>
+
+            <!-- Studente 22 -->
+            <div class="student-card">
+                <div class="student-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="4" r="2" fill="white"/>
+                        <circle cx="8" cy="12" r="2" fill="white"/>
+                        <circle cx="16" cy="12" r="2" fill="white"/>
+                        <circle cx="6" cy="20" r="1.5" fill="white"/>
+                        <circle cx="10" cy="20" r="1.5" fill="white"/>
+                        <circle cx="14" cy="20" r="1.5" fill="white"/>
+                        <circle cx="18" cy="20" r="1.5" fill="white"/>
+                        <line x1="12" y1="6" x2="8" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="12" y1="6" x2="16" y2="10" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="6" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="8" y1="14" x2="10" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="14" y2="18.5" stroke="white" stroke-width="1.5"/>
+                        <line x1="16" y1="14" x2="18" y2="18.5" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h2 class="student-name">Sarra Khemiri</h2>
+                <a href="studente22.html" class="student-link">Visita il Progetto</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>Corso di Informatica - Anno Scolastico 2024-2025</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.9;">Progetti didattici sull'Intelligenza Artificiale e teoria dei giochi</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Cambia Immagine</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            padding: 50px;
+            background-color: #f0f0f0;
+        }
+        
+        #immagine {
+            width: 400px;
+            height: 400px;
+            border: 5px solid #333;
+            border-radius: 20px;
+            margin: 30px auto;
+        }
+        
+        button {
+            font-size: 18px;
+            padding: 15px 30px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid #333;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>FORZA AC MILAN</h1>
+    
+    <img id="immagine" src="https://picsum.photos/400/400?random=1" alt="Immagine">
+    
+    <br>
+    <button onclick="cambiaImmagine('https://wallpapers4screen.com/Uploads/26-6-2023/60390/thumb2-rafael-leao-4k-red-neon-lights-ac-milan-soccer.jpg')"> Leao </button>
+    <button onclick="cambiaImmagine('https://tse1.mm.bing.net/th/id/OIP.6XfFLi1nbAgyJNnvDaagSwHaJQ?pid=ImgDet&w=474&h=592&rs=1&o=7&rm=3')"> Maignan </button>
+    <button onclick="cambiaImmagine('https://tse4.mm.bing.net/th/id/OIP.gmMP4-vPhTFwfb4Z8uqcmQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3')">Nkunku</button>
+    <button onclick="cambiaImmagine('https://milanreports.com/wp-content/uploads/2025/07/2025.07.14-CU-Modric-WebHP.webp')"> Modric</button>
+    <button onclick="cambiaImmagine('https://image-cdn.hypb.st/https://hypebeast.com/image/2025/05/21/puma-x-ac-milan-2025-26-home-kit-000.jpg?fit=max&cbr=1&q=90&w=750&h=500')"> Pulisic</button>
+    <button onclick="cambiaImmagine('https://assets.goal.com/images/v3/bltbbadb8c35ea32d2d/RABIOT_HD.png?auto=webp&format=pjpg&width=3840&quality=60')"> Rabiot</button>
+    <button onclick="cambiaImmagine('https://icdn.sempremilan.com/wp-content/uploads/2025/07/GwaGb-sWkAMRLIL.jpg')"> Estupinian</button>
+    <button onclick="cambiaImmagine('https://icdn.sempremilan.com/wp-content/uploads/2024/07/GTmXqmfXQAATdwr.jpeg')">Pavlovic</button/>
+    <button onclick="cambiaImmagine('https://icdn.sempremilan.com/wp-content/uploads/2025/05/GsIXkXbXMAAKUfs.jpeg')">Max Allegri</button>
+    <button onclick="cambiaImmagine('https://www.milanpress.it/wp-content/uploads/2025/07/Milan-Samuele-Ricci-1-696x452.webp')">Ricci</button>
+    <button onclick="cambiaImmagine('https://assets.calciomercato.com/images/v3/blt3e3b720624775f95/Davide%20Bartesaghi%20Milan.jpg?quality=60&auto=webp&format=pjpg&width=730')">Bartesaghi</button>
+    <button onclick="cambiaImmagine('https://tse1.mm.bing.net/th/id/OIP.PUqpG3Luhn42czACgZFyzAHaEK?rs=1&pid=ImgDetMain&o=7&rm=3')">Logo Milan</button>
+    <button onclick="cambiaImmagine('https://static.onzemondial.com/photo_article/446062/173811/1200-L-ac-milan-zlatan-ibrahimovic-dvoile-les-secrets-de-sa-longvit.jpg')">Ibraimovic</button>
+    <button onclick="cambiaImmagine('https://wallpapers.com/images/hd/epic-portrait-edit-for-paolo-maldini-2k7rupixa4jeo46x.jpg')">Maldini</button>
+  <script>
+
+function cambiaImmagine(nuovoUrl){
+           document.getElementById('immagine').src=nuovoUrl;
+
+
+}
+
+        
+    </script>
+</body>
+</html>

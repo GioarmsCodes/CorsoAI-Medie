@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioca a Forza 4 </title>
+    <style>
+
+/* From Uiverse.io by Shoh2008 */ 
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  transition: 0.5s;
+  background: #1e1e1e;
+  cursor: pointer;
+  color: #A76EEE;
+  box-shadow: 0 0 10px #363636, inset 0 0 10px #363636;
+}
+
+button:hover {
+  animation: a 0.5s 1 linear;
+}
+
+@keyframes a {
+  0% {
+    transform: scale(0.7, 1.3);
+  }
+
+  25% {
+    transform: scale(1.3, 0.7);
+  }
+
+  50% {
+    transform: scale(0.7, 1.3);
+  }
+
+  75% {
+    transform: scale(1.3, 0.7);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .controls label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        select, button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        select {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        button {
+            background: linear-gradient(pink);
+            color:light blue;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .game-board {
+            background: linear-gradient(#D38FFF 0%, Pink 100% );
+            border-radius: 15px;
+            padding: 20px;
+            display: inline-block;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .board-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(7, 60px);
+            gap: 8px;
+        }
+
+        .cell {
+            width: 60px;
+            height: 60px;
+            background: pink;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .cell:hover {
+            background: violet;
+            transform: scale(1.05);
+        }
+
+        .cell.yellow {
+            background:#B671D9 ;
+            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.5);
+            animation: drop 0.5s ease-out;
+        }
+
+        .cell.red {
+            background:#71D9BC;
+            box-shadow: 0 4px 10px rgba(255, 68, 68, 0.5);
+            animation: drop 0.5s ease-out;
+        }
+
+        @keyframes drop {
+            0% {
+                transform: translateY(-400px);
+                opacity: 0;
+            }
+            60% {
+                transform: translateY(10px);
+            }
+            80% {
+                transform: translateY(-5px);
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .status {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            min-height: 40px;
+            color: #333;
+        }
+
+        .status.thinking {
+            color:7FBAFO;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding: 15px;
+            background:PINK ;
+            border-radius: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color:#D38FFF ;
+            font-size: 0.9em;
+        }
+
+        .info-box {
+            background:PINK ;
+            border-left: 4px solid #D38FFF ;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #D38FFF;
+            margin-bottom: 10px;
+        }
+
+        .winner-animation {
+            animation: celebration 0.5s ease-in-out;
+        }
+
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .code-section {
+            background:#D38FFF;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color:pink">Forza 4 AI</h1>
+        <p class="subtitle">Impara l'Intelligenza Artificiale giocando!</p>
+
+        <div class="controls">
+            <label for="aiLevel">Livello AI:</label>
+            <select id="aiLevel">
+                <option value="0">😴 Stupido (casuale)</option>
+                <option value="1">🤔 Medio (difensivo)</option>
+                <option value="2" selected>🧠 Difficile (Minimax)</option>
+            </select>
+            <button onclick="nuovaPartita()">🔄 Nuova Partita</button>
+        </div>
+
+        <div class="info-box">
+            <h3>📚 Come funziona l'AI?</h3>
+            <p id="aiExplanation">L'AI usa l'algoritmo <strong>Minimax</strong>: guarda 4 mosse avanti, assume che tu giochi perfettamente, e sceglie la mossa migliore!</p>
+        </div>
+
+        <div class="status" id="status">Il tuo turno! Clicca su una colonna</div>
+
+        <div class="board-container">
+            <div class="game-board">
+                <div class="board" id="board"></div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="vittorieGiocatore">0</div>
+                <div class="stat-label">🟡 Tue vittorie</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="pareggi">0</div>
+                <div class="stat-label">🤝 Pareggi</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="vittorieAI">0</div>
+                <div class="stat-label">🔴 Vittorie AI</div>
+            </div>
+        </div>
+
+        <div class="code-section">
+            <h3>💻 Concetti AI in questo gioco:</h3>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Funzione di valutazione:</strong> Dare un punteggio a ogni posizione</li>
+                <li><strong>Albero delle decisioni:</strong> Esplorare tutte le mosse possibili</li>
+                <li><strong>Minimax:</strong> Scegliere assumendo che l'avversario giochi al meglio</li>
+                <li><strong>Profondità di ricerca:</strong> Guardare N mosse nel futuro</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+     
+        const RIGHE = 6;
+        const COLONNE = 7;
+        const GIOCATORE = 1;  // blue
+        const AI = 2;          // green
+
+        let griglia = [];
+        let turno = GIOCATORE;
+        let giocoAttivo = true;
+        let stats = {
+            vittorieGiocatore: 0,
+            pareggi: 0,
+            vittorieAI: 0
+        };
+
+        // Inizializza la griglia vuota
+        function inizializzaGriglia() {
+            griglia = [];
+            for (let r = 0; r < RIGHE; r++) {
+                griglia[r] = [];
+                for (let c = 0; c < COLONNE; c++) {
+                    griglia[r][c] = 0;
+                }
+            }
+        }
+
+        // Crea la griglia visuale nel DOM
+        function creaBoard() {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            
+            for (let r = 0; r < RIGHE; r++) {
+                for (let c = 0; c < COLONNE; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    cell.onclick = () => giocatoreGioca(c);
+                    board.appendChild(cell);
+                }
+            }
+        }
+
+        // ============================================================================
+        // LEZIONE 2: REGOLE DEL GIOCO
+        // ============================================================================
+
+        // Controlla se una colonna è disponibile
+        function colonnaValida(col) {
+            return griglia[0][col] === 0;
+        }
+
+        // Inserisce un gettone nella colonna (con gravità!)
+        function inserisciGettone(col, giocatore) {
+            for (let r = RIGHE - 1; r >= 0; r--) {
+                if (griglia[r][col] === 0) {
+                    griglia[r][col] = giocatore;
+                    aggiornaVisuale();
+                    return r;
+                }
+            }
+            return -1;
+        }
+
+        // Rimuove un gettone (per il Minimax)
+        function rimuoviGettone(col) {
+            for (let r = 0; r < RIGHE; r++) {
+                if (griglia[r][col] !== 0) {
+                    griglia[r][col] = 0;
+                    return;
+                }
+            }
+        }
+
+        // Aggiorna la visualizzazione della griglia
+        function aggiornaVisuale() {
+            for (let r = 0; r < RIGHE; r++) {
+                for (let c = 0; c < COLONNE; c++) {
+                    const cell = document.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+                    cell.className = 'cell';
+                    if (griglia[r][c] === GIOCATORE) {
+                        cell.classList.add('yellow');
+                    } else if (griglia[r][c] === AI) {
+                        cell.classList.add('red');
+                    }
+                }
+            }
+        }
+
+        // Controlla se c'è una vittoria
+        function controllaVittoria() {
+            // Orizzontale →
+            for (let r = 0; r < RIGHE; r++) {
+                for (let c = 0; c < COLONNE - 3; c++) {
+                    if (griglia[r][c] !== 0 &&
+                        griglia[r][c] === griglia[r][c+1] &&
+                        griglia[r][c] === griglia[r][c+2] &&
+                        griglia[r][c] === griglia[r][c+3]) {
+                        return griglia[r][c];
+                    }
+                }
+            }
+
+            // Verticale ↓
+            for (let r = 0; r < RIGHE - 3; r++) {
+                for (let c = 0; c < COLONNE; c++) {
+                    if (griglia[r][c] !== 0 &&
+                        griglia[r][c] === griglia[r+1][c] &&
+                        griglia[r][c] === griglia[r+2][c] &&
+                        griglia[r][c] === griglia[r+3][c]) {
+                        return griglia[r][c];
+                    }
+                }
+            }
+
+            // Diagonale ↘
+            for (let r = 0; r < RIGHE - 3; r++) {
+                for (let c = 0; c < COLONNE - 3; c++) {
+                    if (griglia[r][c] !== 0 &&
+                        griglia[r][c] === griglia[r+1][c+1] &&
+                        griglia[r][c] === griglia[r+2][c+2] &&
+                        griglia[r][c] === griglia[r+3][c+3]) {
+                        return griglia[r][c];
+                    }
+                }
+            }
+
+            // Diagonale ↙
+            for (let r = 0; r < RIGHE - 3; r++) {
+                for (let c = 3; c < COLONNE; c++) {
+                    if (griglia[r][c] !== 0 &&
+                        griglia[r][c] === griglia[r+1][c-1] &&
+                        griglia[r][c] === griglia[r+2][c-2] &&
+                        griglia[r][c] === griglia[r+3][c-3]) {
+                        return griglia[r][c];
+                    }
+                }
+            }
+
+            return 0; // Nessuna vittoria
+        }
+
+        // Controlla se c'è un pareggio (griglia piena)
+        function controllaPareggio() {
+            for (let c = 0; c < COLONNE; c++) {
+                if (griglia[0][c] === 0) return false;
+            }
+            return true;
+        }
+
+        // Restituisce le mosse possibili
+        function mossePossibili() {
+            const mosse = [];
+            for (let c = 0; c < COLONNE; c++) {
+                if (colonnaValida(c)) {
+                    mosse.push(c);
+                }
+            }
+            return mosse;
+        }
+
+        // ============================================================================
+        // LEZIONE 3: AI LIVELLO 0 - CASUALE (STUPIDA)
+        // ============================================================================
+
+        function aiCasuale() {
+            const mosse = mossePossibili();
+            return mosse[Math.floor(Math.random() * mosse.length)];
+        }
+
+        // ============================================================================
+        // LEZIONE 4: AI LIVELLO 1 - DIFENSIVA (MEDIA)
+        // ============================================================================
+
+        function aiDifensiva() {
+            const mosse = mossePossibili();
+
+            // 1. Cerca vittoria immediata
+            for (let mossa of mosse) {
+                inserisciGettone(mossa, AI);
+                if (controllaVittoria() === AI) {
+                    rimuoviGettone(mossa);
+                    return mossa; // VITTORIA!
+                }
+                rimuoviGettone(mossa);
+            }
+
+            // 2. Blocca il giocatore se può vincere
+            for (let mossa of mosse) {
+                inserisciGettone(mossa, GIOCATORE);
+                if (controllaVittoria() === GIOCATORE) {
+                    rimuoviGettone(mossa);
+                    return mossa; // BLOCCO!
+                }
+                rimuoviGettone(mossa);
+            }
+
+            // 3. Preferisci il centro (strategico!)
+            if (mosse.includes(3)) return 3;
+
+            // 4. Altrimenti casuale
+            return mosse[Math.floor(Math.random() * mosse.length)];
+        }
+
+        // ============================================================================
+        // LEZIONE 5-6: AI LIVELLO 2 - MINIMAX (INTELLIGENTE!)
+        // ============================================================================
+
+        // Funzione di valutazione: quanto è buona questa posizione?
+        function valutaPosizione(giocatore) {
+            const vincitore = controllaVittoria();
+            
+            if (vincitore === giocatore) return 1000;
+            if (vincitore !== 0) return -1000;
+            
+            let punteggio = 0;
+
+            // Conta le opportunità orizzontali
+            for (let r = 0; r < RIGHE; r++) {
+                for (let c = 0; c < COLONNE - 3; c++) {
+                    const finestra = [griglia[r][c], griglia[r][c+1], griglia[r][c+2], griglia[r][c+3]];
+                    punteggio += valutaFinestra(finestra, giocatore);
+                }
+            }
+
+            // Verticali
+            for (let r = 0; r < RIGHE - 3; r++) {
+                for (let c = 0; c < COLONNE; c++) {
+                    const finestra = [griglia[r][c], griglia[r+1][c], griglia[r+2][c], griglia[r+3][c]];
+                    punteggio += valutaFinestra(finestra, giocatore);
+                }
+            }
+
+            // Diagonali ↘
+            for (let r = 0; r < RIGHE - 3; r++) {
+                for (let c = 0; c < COLONNE - 3; c++) {
+                    const finestra = [griglia[r][c], griglia[r+1][c+1], griglia[r+2][c+2], griglia[r+3][c+3]];
+                    punteggio += valutaFinestra(finestra, giocatore);
+                }
+            }
+
+            // Diagonali ↙
+            for (let r = 0; r < RIGHE - 3; r++) {
+                for (let c = 3; c < COLONNE; c++) {
+                    const finestra = [griglia[r][c], griglia[r+1][c-1], griglia[r+2][c-2], griglia[r+3][c-3]];
+                    punteggio += valutaFinestra(finestra, giocatore);
+                }
+            }
+
+            return punteggio;
+        }
+
+        // Valuta una sequenza di 4 caselle
+        function valutaFinestra(finestra, giocatore) {
+            let punteggio = 0;
+            const avversario = 3 - giocatore;
+
+            const miei = finestra.filter(x => x === giocatore).length;
+            const loro = finestra.filter(x => x === avversario).length;
+            const vuoti = finestra.filter(x => x === 0).length;
+
+            // Se ho 3 gettoni e 1 vuoto → opportunità di vittoria!
+            if (miei === 3 && vuoti === 1) punteggio += 5;
+            if (miei === 2 && vuoti === 2) punteggio += 2;
+
+            // Se l'avversario ha 3 gettoni → pericolo!
+            if (loro === 3 && vuoti === 1) punteggio -= 4;
+
+            return punteggio;
+        }
+
+        // MINIMAX - Il cuore dell'intelligenza artificiale!
+        function minimax(profondita, alpha, beta, massimizzante) {
+            const vincitore = controllaVittoria();
+            
+            // Casi base
+            if (profondita === 0 || vincitore !== 0 || controllaPareggio()) {
+                if (vincitore === AI) return [null, 100000];
+                if (vincitore === GIOCATORE) return [null, -100000];
+                if (controllaPareggio()) return [null, 0];
+                return [null, valutaPosizione(AI)];
+            }
+
+            const mosse = mossePossibili();
+
+            if (massimizzante) {
+                // Turno dell'AI: cerca il MASSIMO punteggio
+                let valoreMax = -Infinity;
+                let miglioreMossa = mosse[0];
+
+                for (let mossa of mosse) {
+                    inserisciGettone(mossa, AI);
+                    const [_, punteggio] = minimax(profondita - 1, alpha, beta, false);
+                    rimuoviGettone(mossa);
+
+                    if (punteggio > valoreMax) {
+                        valoreMax = punteggio;
+                        miglioreMossa = mossa;
+                    }
+
+                    alpha = Math.max(alpha, punteggio);
+                    if (alpha >= beta) break; // Potatura alpha-beta
+                }
+
+                return [miglioreMossa, valoreMax];
+
+            } else {
+                // Turno del giocatore: cerca il MINIMO (peggio per AI)
+                let valoreMin = Infinity;
+                let miglioreMossa = mosse[0];
+
+                for (let mossa of mosse) {
+                    inserisciGettone(mossa, GIOCATORE);
+                    const [_, punteggio] = minimax(profondita - 1, alpha, beta, true);
+                    rimuoviGettone(mossa);
+
+                    if (punteggio < valoreMin) {
+                        valoreMin = punteggio;
+                        miglioreMossa = mossa;
+                    }
+
+                    beta = Math.min(beta, punteggio);
+                    if (alpha >= beta) break;
+                }
+
+                return [miglioreMossa, valoreMin];
+            }
+        }
+
+        function aiIntelligente() {
+            const [mossa, _] = minimax(4, -Infinity, Infinity, true);
+            return mossa;
+        }
+
+        // ============================================================================
+        // GESTIONE DEL GIOCO
+        // ============================================================================
+
+        function giocatoreGioca(col) {
+            if (!giocoAttivo || turno !== GIOCATORE || !colonnaValida(col)) {
+                return;
+            }
+
+            inserisciGettone(col, GIOCATORE);
+            
+            if (controllaSituazione()) return;
+
+            turno = AI;
+            mostraStatus('🤖 L\'AI sta pensando...', true);
+            
+            // Piccolo delay per mostrare il "pensiero" dell'AI
+            setTimeout(aiGioca, 800);
+        }
+
+        function aiGioca() {
+            const livello = parseInt(document.getElementById('aiLevel').value);
+            let mossa;
+
+            if (livello === 0) {
+                mossa = aiCasuale();
+            } else if (livello === 1) {
+                mossa = aiDifensiva();
+            } else {
+                mossa = aiIntelligente();
+            }
+
+            inserisciGettone(mossa, AI);
+            
+            if (controllaSituazione()) return;
+
+            turno = GIOCATORE;
+            mostraStatus('Il tuo turno! Clicca su una colonna');
+        }
+
+        function controllaSituazione() {
+            const vincitore = controllaVittoria();
+            
+            if (vincitore === GIOCATORE) {
+                mostraStatus('🎉 HAI VINTO! Complimenti! 🎉');
+                giocoAttivo = false;
+                stats.vittorieGiocatore++;
+                aggiornaStats();
+                document.querySelector('.container').classList.add('winner-animation');
+                return true;
+            } else if (vincitore === AI) {
+                mostraStatus('🤖 L\'AI ha vinto! Riprova!');
+                giocoAttivo = false;
+                stats.vittorieAI++;
+                aggiornaStats();
+                return true;
+            } else if (controllaPareggio()) {
+                mostraStatus('🤝 PAREGGIO! Partita equilibrata!');
+                giocoAttivo = false;
+                stats.pareggi++;
+                aggiornaStats();
+                return true;
+            }
+            
+            return false;
+        }
+
+        function mostraStatus(messaggio, pensando = false) {
+            const status = document.getElementById('status');
+            status.textContent = messaggio;
+            status.className = 'status' + (pensando ? ' thinking' : '');
+        }
+
+        function aggiornaStats() {
+            document.getElementById('vittorieGiocatore').textContent = stats.vittorieGiocatore;
+            document.getElementById('pareggi').textContent = stats.pareggi;
+            document.getElementById('vittorieAI').textContent = stats.vittorieAI;
+        }
+
+        function nuovaPartita() {
+            inizializzaGriglia();
+            creaBoard();
+            turno = GIOCATORE;
+            giocoAttivo = true;
+            mostraStatus('Il tuo turno! Clicca su una colonna');
+            document.querySelector('.container').classList.remove('winner-animation');
+        }
+
+        // Aggiorna la spiegazione in base al livello selezionato
+        document.getElementById('aiLevel').addEventListener('change', function() {
+            const livello = parseInt(this.value);
+            const spiegazioni = [
+                'L\'AI fa <strong>mosse casuali</strong>: sceglie a caso tra le colonne disponibili. Facilissima da battere!',
+                'L\'AI è <strong>difensiva</strong>: cerca di vincere subito, blocca le tue vittorie e preferisce il centro. Più furba!',
+                'L\'AI usa l\'algoritmo <strong>Minimax</strong>: guarda 4 mosse avanti, assume che tu giochi perfettamente, e sceglie la mossa migliore!'
+            ];
+            document.getElementById('aiExplanation').innerHTML = spiegazioni[livello];
+        });
+
+        // Inizializza il gioco
+        nuovaPartita();
+    </script>
+</body>
+</html>
